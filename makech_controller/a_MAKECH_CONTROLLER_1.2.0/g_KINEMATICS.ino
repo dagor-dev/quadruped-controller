@@ -1,7 +1,7 @@
 
 float heightRestriction(float heightRes){
-  if (heightRes > quad.femur_length + quad.tibia_length - 30) heightRes = quad.femur_length + quad.tibia_length - 30;
-  else if (heightRes <= 30) heightRes = 30;
+  if (heightRes > quad.femur_length + quad.tibia_length - 20) heightRes = quad.femur_length + quad.tibia_length - 20;
+  else if (heightRes <= 20) heightRes = 20;
   return heightRes;
 }
 
@@ -315,7 +315,7 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
     // Z input
     float a3 = ps2x.analog(3);
     float newZ = (*r_state).height + ((a3-128)/128) * ( ((quad.femur_length+quad.tibia_length)/2)-30 );
-    positionZ = 0.96*positionZ + 0.04*newZ;
+    positionZ = 0.955*positionZ + 0.045*newZ;
     //(*r_state).height = positionZ;
 
     // Yaw input

@@ -26,7 +26,8 @@ void loop() {
     walkingPeriod += timeDif;
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
-      walking(); //Step section time [miliseconds], step distance in X, step distance in Y, rotation degrees in Yaw
+      //walking();
+      gait_gen(); //Step section time [miliseconds], step distance in X, step distance in Y, rotation degrees in Yaw
     }
   }
 
