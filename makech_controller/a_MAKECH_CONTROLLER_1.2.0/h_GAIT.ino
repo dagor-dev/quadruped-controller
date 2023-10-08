@@ -1,6 +1,6 @@
 #define UNSIG_TIME_DIF(a,b) (a > b) ? a - b : 0;
 
-void gait_gen(float ratio, float stancePeriod, float swingPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
+void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
   static bool stoppingFlag = false;
   static float prev_feet_offset_y = r_state.foot_pos_offset_y;
   static float positionZ = r_state.height;
@@ -81,7 +81,7 @@ void gait_gen(float ratio, float stancePeriod, float swingPeriod, float constant
       fr_yaw = -yawAngle;
       bl_yaw = -yawAngle;
       
-      stepFlag_1 = 3;              
+      stepFlag_1 = 0;              
       prevStepMillis_1 = runTime;
     }
     else if (stepFlag_1 == 3 && runTime - prevStepMillis_1 > swingPeriod/2) {
@@ -90,45 +90,44 @@ void gait_gen(float ratio, float stancePeriod, float swingPeriod, float constant
       stepFlag_1 = 0;              
     }
 
-
-    //if( runTime - desync > ratio*swingPeriod){
-      unsigned long desync = UNSIG_TIME_DIF(runTime, prevStepMillis_2);
-      if (stepFlag_2 == 0 && desync > swingPeriod) {
-        legLength2 = positionZ + z_pushup; 
-        fl_x = +positionX;
-        br_x = -positionX;
-        fl_y = -positionY + r_state.foot_pos_offset_y;
-        br_y = +positionY + r_state.foot_pos_offset_y;
-        fl_yaw = -yawAngle;
-        br_yaw = -yawAngle;
-        
-        stepFlag_2 = 1;              
-        prevStepMillis_2 = runTime;
-        
-      }
-      else if (stepFlag_2 == 1 && runTime - prevStepMillis_2 > swingPeriod/2) {
-        legLength2 = positionZ; 
-        
-        stepFlag_2 = 2;              
-      }
-      else if (stepFlag_2 == 2 && runTime - prevStepMillis_2 > swingPeriod) {
-        legLength2 = positionZ - gait.step_length_z; 
-        fl_x = -positionX;
-        br_x = +positionX;
-        fl_y = +positionY + r_state.foot_pos_offset_y;
-        br_y = -positionY + r_state.foot_pos_offset_y;
-        fl_yaw = +yawAngle;
-        br_yaw = +yawAngle;
-        
-        stepFlag_2 = 3;              
-        prevStepMillis_2 = runTime;
-      }
-      else if (stepFlag_2 == 3 && runTime - prevStepMillis_2 > swingPeriod/2) {
-        legLength2 = positionZ; 
-        
-        stepFlag_2 = 0;              
-      }
-    //}    
+    
+    unsigned long desync = UNSIG_TIME_DIF(runTime, prevStepMillis_2);
+    if (stepFlag_2 == 0 && desync > swingPeriod) {
+      legLength2 = positionZ - gait.step_length_z; 
+      fl_x = -positionX;
+      br_x = +positionX;
+      fl_y = +positionY + r_state.foot_pos_offset_y;
+      br_y = -positionY + r_state.foot_pos_offset_y;
+      fl_yaw = +yawAngle;
+      br_yaw = +yawAngle;
+      
+      stepFlag_2 = 1;              
+      prevStepMillis_2 = runTime;
+      
+    }
+    else if (stepFlag_2 == 1 && runTime - prevStepMillis_2 > swingPeriod/2) {
+      legLength2 = positionZ; 
+      
+      stepFlag_2 = 2;              
+    }
+    else if (stepFlag_2 == 2 && runTime - prevStepMillis_2 > swingPeriod) {
+      legLength2 = positionZ + z_pushup; 
+      fl_x = +positionX;
+      br_x = -positionX;
+      fl_y = -positionY + r_state.foot_pos_offset_y;
+      br_y = +positionY + r_state.foot_pos_offset_y;
+      fl_yaw = -yawAngle;
+      br_yaw = -yawAngle;
+      
+      stepFlag_2 = 0;              
+      prevStepMillis_2 = runTime;
+    }
+    else if (stepFlag_2 == 3 && runTime - prevStepMillis_2 > swingPeriod/2) {
+      legLength2 = positionZ; 
+      
+      stepFlag_2 = 0;              
+    }
+    
   }
   else{
         prevStepMillis_1 = runTime;
@@ -165,7 +164,7 @@ void gait_gen(float ratio, float stancePeriod, float swingPeriod, float constant
   sendCalculatedAngles();
 }
 
-void walking(int stepPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
+void trot(int stepPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
   static bool stoppingFlag = false;
   static float prev_feet_offset_y = r_state.foot_pos_offset_y;
   static float positionZ = r_state.height;
