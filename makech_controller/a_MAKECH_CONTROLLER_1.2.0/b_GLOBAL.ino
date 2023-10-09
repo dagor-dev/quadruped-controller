@@ -73,7 +73,7 @@ public:
       savedValue = input;          // bookmark the old value  
     
       if (interpolationFlag == 0) {                                        // only do it once until the flag is reset
-          myRamp.go(input, duration, QUADRATIC_INOUT, ONCEFORWARD);        // start interpolation (value to go to, duration)
+          myRamp.go(input, duration, LINEAR , ONCEFORWARD);        // start interpolation (value to go to, duration) QUADRATIC_INOUT
           interpolationFlag = true;
       }
     
@@ -120,6 +120,6 @@ void holdInverseKinematics(struct Robot_state *r_state = &r_state, struct IK_par
 //void holdInverseKinematics(float z_change, float transl_x, float transl_y, float initZ = r_state.height, float initX = r_state.foot_pos_offset_x, float initY = r_state.foot_pos_offset_y);
 void moveInverseKinematics(float constantZ, float constantX, float constantY);
 void crawl(float ratio = gait.sync_ratio, float stancePeriod = gait.stance_period, float swingPeriod = gait.swing_period, float constantX = gait.step_length_x, float constantY = gait.step_length_y, float constantYaw = gait.yaw_angle, float constantPitch = gait.pitch_angle);
-void trot(int stepPeriod = gait.trot_period, float constantX = gait.step_length_x, float constantY = gait.step_length_y, float constantYaw = gait.yaw_angle, float constantPitch = gait.pitch_angle);
+void trot(int trotPeriod = gait.trot_period, float constantX = gait.step_length_x, float constantY = gait.step_length_y, float constantYaw = gait.yaw_angle, float constantPitch = gait.pitch_angle);
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status);
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len);

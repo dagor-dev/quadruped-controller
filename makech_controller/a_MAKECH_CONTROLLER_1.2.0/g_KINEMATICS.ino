@@ -393,7 +393,7 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
 void gaitKinematics(int leg, float positionX, float positionY, float positionZ, float yawAngle, float pitchAngle, float rollAngle, float dur){
 
   static float mult = 1.0;
-  static float multZ = 0.5;
+  static float multZ = 0.5;   // all motions in Z are halfed because the foot has to go up AND down in the same time as the move moves in XY
 
   if (leg == 0) {        // front right
     positionZ = interpFRZ.go(positionZ,dur*multZ);

@@ -1,5 +1,4 @@
 
-
 void loop() {
   unsigned long datos = ps2x.read();    // Never comment this line
   timeManagement();                     // Never comment this line either
