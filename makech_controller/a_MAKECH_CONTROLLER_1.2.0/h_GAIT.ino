@@ -40,6 +40,7 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
   positionZ = holdPositionZ(1.5);
   static float z_pushup = 0;                        // add some value to Z for the two legs that keep in contact with the ground to help keep the robot's
                                                     // torso at the same height. Only support from two legs will make the robot sink a little without this.
+  static float anti_twist = 0;
   
   // Y input
   float a2 = ps2x.analog(2);                          // Read left analog stick from left to right
@@ -94,7 +95,7 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
 
       fr_z = positionZ + z_pushup;
       fr_x = +positionX;
-      fr_y = +positionY + r_state.foot_pos_offset_y;
+      fr_y = +positionY + r_state.foot_pos_offset_y + anti_twist;
       fr_yaw = -yawAngle;
     
       stepFlag_fr = 0;              
@@ -131,7 +132,7 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
 
       bl_z = positionZ + z_pushup;
       bl_x = -positionX;
-      bl_y = -positionY + r_state.foot_pos_offset_y;
+      bl_y = -positionY + r_state.foot_pos_offset_y + anti_twist;
       bl_yaw = -yawAngle;
       
       stepFlag_bl = 0;              
@@ -169,7 +170,7 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
 
       fl_z = positionZ + z_pushup;
       fl_x = +positionX;
-      fl_y = -positionY + r_state.foot_pos_offset_y;
+      fl_y = -positionY + r_state.foot_pos_offset_y + anti_twist;
       fl_yaw = -yawAngle;
 
       stepFlag_fl = 0;              
@@ -208,7 +209,7 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
 
       br_z = positionZ + z_pushup;
       br_x = -positionX;
-      br_y = +positionY + r_state.foot_pos_offset_y;
+      br_y = +positionY + r_state.foot_pos_offset_y + anti_twist;
       br_yaw = -yawAngle;
       
       stepFlag_br = 0;              

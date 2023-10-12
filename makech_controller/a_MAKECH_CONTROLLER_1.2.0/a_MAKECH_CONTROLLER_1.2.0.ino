@@ -39,13 +39,13 @@ Robot_state r_state;
 
 //##########################_GAIT PARAMETERS_##########################
 typedef struct Gait_parameters{
-  float step_length_x = 60;                // Length of the step in the X axis [mm]
+  float step_length_x = 45;                // Length of the step in the X axis [mm]
   float step_length_y = 30;                // Length of the step in the Y axis [mm]
-  float step_length_z = 75;                // Lenght the foot is picked up on the swing phase of the gait [mm]
-  float yaw_angle = 9;                     // Degrees to turn in yaw during gait [degrees]
+  float step_length_z = 65;                // Lenght the foot is picked up on the swing phase of the gait [mm]
+  float yaw_angle = 15;                     // Degrees to turn in yaw during gait [degrees]
   float pitch_angle = 12;                  // Max pitch angle during gait [degrees]
   float trot_period = 100;
-  float stance_period = 700;                 // Time each phase of the gait takes [ms]
+  float stance_period = 650;                 // Time each phase of the gait takes [ms]
   float swing_period =  100;
   float sync_ratio = 0.5;                  // 0 -> completely in sync, 1 completely out of sync / used for crawling
   const float update_freq = 250;           // [Hz]
