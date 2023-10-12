@@ -9,8 +9,14 @@ void toggleStateMachine(){
   }
   if(ps2x.button(PSB_R2) && !pressed){
     pressed = true;
-    Serial.println("STATE MACHINE: Walking.");
-    stateMachine = WALKING;
+    Serial.println("STATE MACHINE: Crawling.");
+    stateMachine = CRAWL;
+    if(ps2x.button(PSB_R1) && !pressed){
+      pressed = true;
+      Serial.println("STATE MACHINE: Trotting.");
+      stateMachine = TROT;
+    }
+
   }
   else if(ps2x.button(PSB_L2) && !pressed){
     pressed = true;
@@ -146,9 +152,9 @@ void sideFlip(){
     pressed = false;
   }
   
-#define JUMP_P_GAIN   "MAP1.25"
-#define LAND_P_GAIN   "MAP0.3"
-#define DEFAULT_P_GAIN "MAP1.0"
+  #define JUMP_P_GAIN   "MAP1.25"
+  #define LAND_P_GAIN   "MAP0.3"
+  #define DEFAULT_P_GAIN "MAP1.0"
 
   if(ps2x.button(PSB_SQUARE) && !pressed){
     pressed = true;

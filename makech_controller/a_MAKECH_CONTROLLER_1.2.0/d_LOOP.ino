@@ -20,13 +20,18 @@ void loop() {
       holdInverseKinematics();
     }    
   }
-
-  else if(stateMachine == WALKING){
+  else if(stateMachine == CRAWL){
     walkingPeriod += timeDif;
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
-      //trot();
       crawl(); //Step section time [miliseconds], step distance in X, step distance in Y, rotation degrees in Yaw
+    }
+  }
+  else if(stateMachine == TROT){
+    walkingPeriod += timeDif;
+    if(walkingPeriod >= (1000/gait.update_freq) ){
+      walkingPeriod = 0;
+      trot();
     }
   }
 

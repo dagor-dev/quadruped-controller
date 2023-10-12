@@ -16,8 +16,9 @@ bool bll = true;            // Back  Left  Leg - ID -> 3
 
 enum State_Machine {
   KINEMATICS_DEMO,
-  WALKING,
-  JUMPING
+  CRAWL,
+  JUMPING,
+  TROT
 };
 
 /*
@@ -73,7 +74,7 @@ public:
       savedValue = input;          // bookmark the old value  
     
       if (interpolationFlag == 0) {                                        // only do it once until the flag is reset
-          myRamp.go(input, duration, LINEAR , ONCEFORWARD);        // start interpolation (value to go to, duration) QUADRATIC_INOUT
+          myRamp.go(input, duration, QUADRATIC_INOUT, ONCEFORWARD);        // start interpolation (value to go to, duration) LINEAR
           interpolationFlag = true;
       }
     
