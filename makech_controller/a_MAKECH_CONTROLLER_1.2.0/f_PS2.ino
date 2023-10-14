@@ -9,14 +9,15 @@ void toggleStateMachine(){
   }
   if(ps2x.button(PSB_R2) && !pressed){
     pressed = true;
-    Serial.println("STATE MACHINE: Crawling.");
-    stateMachine = CRAWL;
-    if(ps2x.button(PSB_R1) && !pressed){
+    if(ps2x.button(PSB_R1)){
       pressed = true;
       Serial.println("STATE MACHINE: Trotting.");
       stateMachine = TROT;
     }
-
+    else{
+      Serial.println("STATE MACHINE: Crawling.");
+      stateMachine = CRAWL;
+    }
   }
   else if(ps2x.button(PSB_L2) && !pressed){
     pressed = true;
@@ -63,22 +64,26 @@ void homing(){
       
       if (frl){
           sendData(0, "home", 0, "home", 0, "home", 0);
-          sendData(0, "MLV5", 0, "MLV5", 0, "MLV5", 0);
+          sendData(0, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(0, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (fll){
           sendData(1, "home", 0, "home", 0, "home", 0);
-          sendData(1, "MLV5", 0, "MLV5", 0, "MLV5", 0);
+          sendData(1, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(1, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (brl){
           sendData(2, "home", 0, "home", 0, "home", 0);
-          sendData(2, "MLV5", 0, "MLV5", 0, "MLV5", 0);
+          sendData(2, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(2, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (bll){
           sendData(3, "home", 0, "home", 0, "home", 0);
-          sendData(3, "MLV5", 0, "MLV5", 0, "MLV5", 0);
+          sendData(3, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(3, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
   }
 }

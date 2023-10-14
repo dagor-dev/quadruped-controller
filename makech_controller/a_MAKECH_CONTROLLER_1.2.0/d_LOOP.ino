@@ -9,7 +9,7 @@ void loop() {
     doAFlip();                // Triangle
     toggleStateMachine();     // R2 and L2
     //reset_esp_now();        // Square
-    //sideFlip();               // Square
+    //sideFlip();             // Square
   }
   
   if(stateMachine == KINEMATICS_DEMO){
@@ -31,7 +31,8 @@ void loop() {
     walkingPeriod += timeDif;
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
-      trot();
+      crawl(0.5, 100, 100, 45, 25, 6, 10);
+      //trot();
     }
   }
 

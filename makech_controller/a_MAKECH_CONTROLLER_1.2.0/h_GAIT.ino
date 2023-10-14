@@ -1,7 +1,8 @@
 #define UNSIG_TIME_DIF(a,b) (a > b) ? a - b : 0;
 
 void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
-  static bool stoppingFlag = false;
+  static bool motionFlag = false;
+  static unsigned long stopTimer = 0;
   static float prev_feet_offset_y = r_state.foot_pos_offset_y;
   static float positionZ = r_state.height;
   static float positionX, positionY, yawAngle, pitchAngle;
@@ -14,10 +15,10 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
   static unsigned long prevStepMillis_fl = runTime + ratio*(swingPeriod+stancePeriod);
   static unsigned long prevStepMillis_br = runTime;
   static unsigned long prevStepMillis_bl = runTime + ratio*(swingPeriod+stancePeriod);
-  static int stepPeriod_fr = 0; //swingPeriod;
-  static int stepPeriod_fl = 0; //swingPeriod;
-  static int stepPeriod_br = 0; //swingPeriod;
-  static int stepPeriod_bl = 0; //swingPeriod;
+  static int stepPeriod_fr = 0; // Start with 0 to avoid bug where z position interpolated from 0 to r_state.height making the robot jump
+  static int stepPeriod_fl = 0;
+  static int stepPeriod_br = 0;
+  static int stepPeriod_bl = 0;
 
   static float fr_z = r_state.height;
   static float fl_z = r_state.height;
@@ -63,8 +64,18 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
   pitchAngle = 0.99*pitchAngle + 0.01*newPitch; 
 
   holdFeetOffsetY(1);
+
+  if( abs(positionX) > 4 || abs(positionY) > 2 || abs(yawAngle) > 0.5 || abs(pitchAngle) > 0.5 || (prev_feet_offset_y != r_state.foot_pos_offset_y) ){
+    motionFlag = true;
+    stopTimer = runTime;
+  }
+  else{
+    if(runTime - stopTimer > 1000){
+      motionFlag = false;
+    }
+  }
   
-  if( abs(positionX) > 6 || abs(positionY) > 3 || abs(yawAngle) > 0.5 || abs(pitchAngle) > 0.5 || (prev_feet_offset_y != r_state.foot_pos_offset_y) ){
+  if( motionFlag || stepFlag_fr != 0 ){
     // Front Right ----------------------------------------------------------------
     if (stepFlag_fr == 0 && runTime - prevStepMillis_fr > stancePeriod) {
       stepPeriod_fr = swingPeriod/3;
@@ -101,7 +112,18 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
       stepFlag_fr = 0;              
       prevStepMillis_fr = runTime;
     }
+  }
+  else{
+    stepPeriod_fr = 0;
+    prevStepMillis_fr = runTime;
+    stepFlag_fr = 0;
+    fr_z = positionZ;
+    fr_x = 0;
+    fr_y = 0 + r_state.foot_pos_offset_y;
+    fr_yaw = 0;
+  }
     
+  if( motionFlag || stepFlag_bl != 0 ){
     // Back Left ----------------------------------------------------------------
     if (stepFlag_bl == 0 && runTime - prevStepMillis_bl > stancePeriod) {
       stepPeriod_bl = swingPeriod/3;
@@ -138,7 +160,18 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
       stepFlag_bl = 0;              
       prevStepMillis_bl = runTime;
     }
+  }
+  else{
+    stepPeriod_bl = 0;
+    prevStepMillis_bl = runTime;
+    stepFlag_bl = 0; 
+    bl_z = positionZ; 
+    bl_x = 0;
+    bl_y = 0 + r_state.foot_pos_offset_y;
+    bl_yaw = 0;
+  }
 
+  if( motionFlag || stepFlag_fl != 0 ){
     // Front Left ----------------------------------------------------------------
     unsigned long desync_fl = UNSIG_TIME_DIF(runTime, prevStepMillis_fl);
     if (stepFlag_fl == 0 && desync_fl > stancePeriod) {
@@ -176,7 +209,18 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
       stepFlag_fl = 0;              
       prevStepMillis_fl = runTime;
     }
+  }
+  else{
+    stepPeriod_fl = 0;
+    prevStepMillis_fl = runTime + ratio*(swingPeriod+stancePeriod);
+    stepFlag_fl = 0;
+    fl_z = positionZ; 
+    fl_x = 0;
+    fl_y = 0 + r_state.foot_pos_offset_y;
+    fl_yaw = 0;
+  }
 
+  if( motionFlag || stepFlag_br != 0 ){
     // Back Right ----------------------------------------------------------------
     unsigned long desync_br = UNSIG_TIME_DIF(runTime, prevStepMillis_br);
     if (stepFlag_br == 0 && desync_br > stancePeriod) {
@@ -215,37 +259,15 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
       stepFlag_br = 0;              
       prevStepMillis_br = runTime;
     }
-
   }
   else{
-        stepPeriod_fr = 0;
-        stepPeriod_fl = 0;
-        stepPeriod_br = 0;
-        stepPeriod_bl = 0;
-        prevStepMillis_fr = runTime;
-        prevStepMillis_fl = runTime + ratio*(swingPeriod+stancePeriod);
-        prevStepMillis_br = runTime + ratio*(swingPeriod+stancePeriod);
-        prevStepMillis_bl = runTime;
-        stepFlag_fr = 0;
-        stepFlag_fl = 0;
-        stepFlag_br = 0;
-        stepFlag_bl = 0; 
-        fr_z = positionZ;
-        fl_z = positionZ; 
-        br_z = positionZ;
-        bl_z = positionZ; 
-        fr_x = 0;
-        fl_x = 0;
-        br_x = 0;
-        bl_x = 0;
-        fr_y = 0 + r_state.foot_pos_offset_y;
-        fl_y = 0 + r_state.foot_pos_offset_y;
-        br_y = 0 + r_state.foot_pos_offset_y;
-        bl_y = 0 + r_state.foot_pos_offset_y;
-        fr_yaw = 0;
-        fl_yaw = 0;
-        br_yaw = 0;
-        bl_yaw = 0;
+    stepPeriod_br = 0;
+    prevStepMillis_br = runTime + ratio*(swingPeriod+stancePeriod);
+    stepFlag_br = 0;
+    br_z = positionZ;
+    br_x = 0;
+    br_y = 0 + r_state.foot_pos_offset_y;
+    br_yaw = 0;
   }
 
   prev_feet_offset_y = r_state.foot_pos_offset_y;
@@ -254,7 +276,6 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
   gaitKinematics (1, fl_x, -fl_y, fl_z, fl_yaw, pitchAngle, 0, stepPeriod_fl);   // front left leg
   gaitKinematics (2, br_x, -br_y, br_z, br_yaw, pitchAngle, 0, stepPeriod_br);   // back right leg
   gaitKinematics (3, bl_x, -bl_y, bl_z, bl_yaw, pitchAngle, 0, stepPeriod_bl);   // back left leg
-  
 
   sendCalculatedAngles();
 }

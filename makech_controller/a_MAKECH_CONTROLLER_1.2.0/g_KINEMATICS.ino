@@ -328,13 +328,13 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
     // Pitch input
     float a1 = ps2x.analog(1);
     float newPitch = ((a1-128)/128) * (*ik).max_pitch_movement;
-    pitchAngle = 0.955*pitchAngle + 0.045*newPitch;
+    pitchAngle = 0.96*pitchAngle + 0.04*newPitch;
     (*r_state).pitch_angle = pitchAngle;
   
     // Roll input
     float a0 = ps2x.analog(0);
     float newRoll = ((a0-128)/128) * (*ik).max_roll_movement;
-    rollAngle = 0.955*rollAngle + 0.045*newRoll;
+    rollAngle = 0.96*rollAngle + 0.04*newRoll;
     (*r_state).roll_angle = rollAngle;
   
     yaw(&coordinates[0], yawAngle,  positionX,  positionY - (*r_state).foot_pos_offset_y);

@@ -42,7 +42,7 @@ typedef struct Gait_parameters{
   float step_length_x = 45;                // Length of the step in the X axis [mm]
   float step_length_y = 30;                // Length of the step in the Y axis [mm]
   float step_length_z = 65;                // Lenght the foot is picked up on the swing phase of the gait [mm]
-  float yaw_angle = 15;                     // Degrees to turn in yaw during gait [degrees]
+  float yaw_angle = 10;                     // Degrees to turn in yaw during gait [degrees]
   float pitch_angle = 12;                  // Max pitch angle during gait [degrees]
   float trot_period = 100;
   float stance_period = 650;                 // Time each phase of the gait takes [ms]
