@@ -13,8 +13,8 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
   static int stepFlag_bl = 0;
   static unsigned long prevStepMillis_fr = runTime;
   static unsigned long prevStepMillis_fl = runTime + ratio*(swingPeriod+stancePeriod);
-  static unsigned long prevStepMillis_br = runTime;
-  static unsigned long prevStepMillis_bl = runTime + ratio*(swingPeriod+stancePeriod);
+  static unsigned long prevStepMillis_br = runTime + ratio*(swingPeriod+stancePeriod);
+  static unsigned long prevStepMillis_bl = runTime;
   static int stepPeriod_fr = 0; // Start with 0 to avoid bug where z position interpolated from 0 to r_state.height making the robot jump
   static int stepPeriod_fl = 0;
   static int stepPeriod_br = 0;
@@ -171,9 +171,9 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
     bl_yaw = 0;
   }
 
+  unsigned long desync_fl = UNSIG_TIME_DIF(runTime, prevStepMillis_fl);
   if( motionFlag || stepFlag_fl != 0 ){
     // Front Left ----------------------------------------------------------------
-    unsigned long desync_fl = UNSIG_TIME_DIF(runTime, prevStepMillis_fl);
     if (stepFlag_fl == 0 && desync_fl > stancePeriod) {
       stepPeriod_fl = swingPeriod/3;
       
@@ -220,9 +220,9 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
     fl_yaw = 0;
   }
 
+  unsigned long desync_br = UNSIG_TIME_DIF(runTime, prevStepMillis_br);
   if( motionFlag || stepFlag_br != 0 ){
     // Back Right ----------------------------------------------------------------
-    unsigned long desync_br = UNSIG_TIME_DIF(runTime, prevStepMillis_br);
     if (stepFlag_br == 0 && desync_br > stancePeriod) {
       stepPeriod_br = swingPeriod/3;
 
@@ -272,15 +272,15 @@ void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, 
 
   prev_feet_offset_y = r_state.foot_pos_offset_y;
 
-  gaitKinematics (0, fr_x, -fr_y, fr_z, fr_yaw, pitchAngle, 0, stepPeriod_fr);   // front right leg
-  gaitKinematics (1, fl_x, -fl_y, fl_z, fl_yaw, pitchAngle, 0, stepPeriod_fl);   // front left leg
-  gaitKinematics (2, br_x, -br_y, br_z, br_yaw, pitchAngle, 0, stepPeriod_br);   // back right leg
-  gaitKinematics (3, bl_x, -bl_y, bl_z, bl_yaw, pitchAngle, 0, stepPeriod_bl);   // back left leg
+  gaitKinematics (0, fr_x, -fr_y, fr_z, fr_yaw, pitchAngle, 0, stepPeriod_fr, 1);   // front right leg
+  gaitKinematics (1, fl_x, -fl_y, fl_z, fl_yaw, pitchAngle, 0, stepPeriod_fl, 1);   // front left leg
+  gaitKinematics (2, br_x, -br_y, br_z, br_yaw, pitchAngle, 0, stepPeriod_br, 1);   // back right leg
+  gaitKinematics (3, bl_x, -bl_y, bl_z, bl_yaw, pitchAngle, 0, stepPeriod_bl, 1);   // back left leg
 
   sendCalculatedAngles();
 }
 
-/*
+
 void trot(float trotPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
   static bool stoppingFlag = false;
   static float prev_feet_offset_y = r_state.foot_pos_offset_y;
@@ -433,17 +433,17 @@ void trot(float trotPeriod, float constantX, float constantY, float constantYaw,
 
   prev_feet_offset_y = r_state.foot_pos_offset_y;
 
-  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, trotPeriod);   // front right leg
-  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, trotPeriod);   // front left leg
-  gaitKinematics (2, br_x, -br_y, legLength2, br_yaw, pitchAngle, 0, trotPeriod);   // back right leg
-  gaitKinematics (3, bl_x, -bl_y, legLength1, bl_yaw, pitchAngle, 0, trotPeriod);   // back left leg
+  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, trotPeriod, 0.5);   // front right leg
+  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, trotPeriod, 0.5);   // front left leg
+  gaitKinematics (2, br_x, -br_y, legLength2, br_yaw, pitchAngle, 0, trotPeriod, 0.5);   // back right leg
+  gaitKinematics (3, bl_x, -bl_y, legLength1, bl_yaw, pitchAngle, 0, trotPeriod, 0.5);   // back left leg
   
 
   sendCalculatedAngles();
 }
-*/
 
 
+/*
 void trot(int trotPeriod, float constantX, float constantY, float constantYaw, float constantPitch){
   static bool stoppingFlag = false;
   static float prev_feet_offset_y = r_state.foot_pos_offset_y;
@@ -550,12 +550,11 @@ void trot(int trotPeriod, float constantX, float constantY, float constantYaw, f
       legLength1 = positionZ;
       legLength2 = positionZ; 
       
-      stepFlag = 0;              
+      stepFlag = 3;              
       //previousStepMillis = runTime;
     }
   }
   else{
-
       if ( stepFlag == 1 || stepFlag == 3 ) stoppingFlag = true;
       else {
         legLength1 = positionZ;
@@ -573,20 +572,18 @@ void trot(int trotPeriod, float constantX, float constantY, float constantYaw, f
         bl_yaw = 0;
         br_yaw = 0;
       }
-
   }
 
   prev_feet_offset_y = r_state.foot_pos_offset_y;
 
-  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, trotPeriod);   // front right leg
-  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, trotPeriod);   // front left leg
-  gaitKinematics (2, br_x, -br_y, legLength2, br_yaw, pitchAngle, 0, trotPeriod);   // back right leg
-  gaitKinematics (3, bl_x, -bl_y, legLength1, bl_yaw, pitchAngle, 0, trotPeriod);   // back left leg
-  
+  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, trotPeriod, 0.5);   // front right leg
+  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, trotPeriod, 0.5);   // front left leg
+  gaitKinematics (2, br_x, -br_y, legLength1, br_yaw, pitchAngle, 0, trotPeriod, 0.5);   // back right leg
+  gaitKinematics (3, bl_x, -bl_y, legLength2, bl_yaw, pitchAngle, 0, trotPeriod, 0.5);   // back left leg
 
   sendCalculatedAngles();
 }
-
+*/
 
 /*
 void crawl(float ratio, float stancePeriod, float swingPeriod, float constantX, float constantY, float constantYaw, float constantPitch){

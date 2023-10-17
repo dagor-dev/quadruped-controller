@@ -39,11 +39,11 @@ Robot_state r_state;
 
 //##########################_GAIT PARAMETERS_##########################
 typedef struct Gait_parameters{
-  float step_length_x = 45;                // Length of the step in the X axis [mm]
+  float step_length_x = 50;                // Length of the step in the X axis [mm]
   float step_length_y = 30;                // Length of the step in the Y axis [mm]
   float step_length_z = 65;                // Lenght the foot is picked up on the swing phase of the gait [mm]
-  float yaw_angle = 10;                     // Degrees to turn in yaw during gait [degrees]
-  float pitch_angle = 12;                  // Max pitch angle during gait [degrees]
+  float yaw_angle = 12;                     // Degrees to turn in yaw during gait [degrees]
+  float pitch_angle = 10;                  // Max pitch angle during gait [degrees]
   float trot_period = 100;
   float stance_period = 650;                 // Time each phase of the gait takes [ms]
   float swing_period =  100;
@@ -59,7 +59,7 @@ typedef struct IK_parameters{
   int orientation = 1;                       // Leg orientation
   const float max_x_movement = 50;           // Max torso movement in the X axis [mm]
   const float max_y_movement = 50;           // Max torso movement in the Y axis [mm]
-  const float max_yaw_movement = PI/9;       // Max torso movement in the Y axis [rads]
+  const float max_yaw_movement = PI/8;       // Max torso movement in the Y axis [rads]
   const float max_pitch_movement = PI/9;     // Max torso movement in the Y axis [rads]
   const float max_roll_movement = PI/3.5;    // Max torso movement in the Y axis [rads]
   const float update_freq = 125;             // [Hz]

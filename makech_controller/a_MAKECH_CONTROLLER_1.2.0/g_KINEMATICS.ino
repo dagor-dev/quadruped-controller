@@ -314,7 +314,7 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
   
     // Z input
     float a3 = ps2x.analog(3);
-    float newZ = (*r_state).height + ((a3-128)/128) * ( ((quad.femur_length+quad.tibia_length)/2)-30 );
+    float newZ = (*r_state).height + ((a3-128)/128) * ( ((quad.femur_length+quad.tibia_length)/2)-20 );
     positionZ = 0.955*positionZ + 0.045*newZ;
     //(*r_state).height = positionZ;
 
@@ -390,10 +390,11 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
   }
 }
 
-void gaitKinematics(int leg, float positionX, float positionY, float positionZ, float yawAngle, float pitchAngle, float rollAngle, unsigned long dur){
+void gaitKinematics(int leg, float positionX, float positionY, float positionZ, float yawAngle, float pitchAngle, float rollAngle, unsigned long dur, float mult_z){
 
   static float mult = 1.0;
-  static float multZ = 1.0; //0.5;   // all motions in Z are halfed because the foot has to go up AND down in the same time as the move moves in XY
+  float multZ = mult_z; //0.5;   // all motions in Z are halfed because the foot has to go up AND down in the same time as the move moves in XY
+  Serial.println(multZ);
 
   if (leg == 0) {        // front right
     positionZ = interpFRZ.go(positionZ,dur*multZ);

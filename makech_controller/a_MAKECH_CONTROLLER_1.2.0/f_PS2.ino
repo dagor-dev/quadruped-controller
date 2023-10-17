@@ -64,25 +64,33 @@ void homing(){
       
       if (frl){
           sendData(0, "home", 0, "home", 0, "home", 0);
-          sendData(0, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          //sendData(0, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(0, "MLV3", 0, "MLV3", 0, "MLV3", 0);
+          sendData(0, "MLU10", 0, "MLU10", 0, "MLU10", 0);
           sendData(0, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (fll){
           sendData(1, "home", 0, "home", 0, "home", 0);
-          sendData(1, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          //sendData(1, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(1, "MLV3", 0, "MLV3", 0, "MLV3", 0);
+          sendData(1, "MLU10", 0, "MLU10", 0, "MLU10", 0);
           sendData(1, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (brl){
           sendData(2, "home", 0, "home", 0, "home", 0);
-          sendData(2, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          //sendData(2, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(2, "MLV3", 0, "MLV3", 0, "MLV3", 0);
+          sendData(2, "MLU10", 0, "MLU10", 0, "MLU10", 0);
           sendData(2, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
 
       if (bll){
           sendData(3, "home", 0, "home", 0, "home", 0);
-          sendData(3, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          //sendData(3, "MLV1.8", 0, "MLV2.5", 0, "MLV2.5", 0);
+          sendData(3, "MLV3", 0, "MLV3", 0, "MLV3", 0);
+          sendData(3, "MLU10", 0, "MLU10", 0, "MLU10", 0);
           sendData(3, "MQP1", 0, "MQP1", 0, "MQP1", 0);
       }
   }
