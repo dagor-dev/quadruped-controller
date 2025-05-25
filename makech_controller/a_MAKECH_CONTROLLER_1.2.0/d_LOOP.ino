@@ -32,7 +32,7 @@ void loop() {
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
       //crawl(0.5, 100, 100, 45, 25, 6, 10);
-      trot(gait.trot_period, 45, 25, 8, 10);
+      trot(gait.trot_period, 55, 25, 8, 10);
     }
   }
 

@@ -66,15 +66,20 @@ public:
     bool interpolationFlag = false;
     float savedValue;    
 
-    float go(float input, int duration) {
+    float go(float input, int duration, int inter_style) {
 
       if (input != savedValue) {   // check for new data
           interpolationFlag = false;
       }
       savedValue = input;          // bookmark the old value  
     
-      if (interpolationFlag == 0) {                                        // only do it once until the flag is reset
-          myRamp.go(input, duration, QUADRATIC_INOUT, ONCEFORWARD);        // start interpolation (value to go to, duration) LINEAR
+      if (interpolationFlag == 0) {                               // only do it once until the flag is reset
+        if (inter_style){
+          myRamp.go(input, duration, LINEAR, ONCEFORWARD);        // start interpolation (value to go to, duration) QUADRATIC_INOUT
+        }
+        else{
+          myRamp.go(input, duration, QUADRATIC_INOUT, ONCEFORWARD);        // start interpolation (value to go to, duration) 
+        }
           interpolationFlag = true;
       }
     

@@ -390,38 +390,38 @@ void holdInverseKinematics(struct Robot_state *r_state, struct IK_parameters *ik
   }
 }
 
-void gaitKinematics(int leg, float positionX, float positionY, float positionZ, float yawAngle, float pitchAngle, float rollAngle, unsigned long dur, float mult_z){
+void gaitKinematics(int leg, float positionX, float positionY, float positionZ, float yawAngle, float pitchAngle, float rollAngle, unsigned long dur, float mult_z, int inter_style){
 
   static float mult = 1.0;
   float multZ = mult_z; //0.5;   // all motions in Z are halfed because the foot has to go up AND down in the same time as the move moves in XY
   Serial.println(multZ);
 
   if (leg == 0) {        // front right
-    positionZ = interpFRZ.go(positionZ,dur*multZ);
-    positionX = interpFRX.go(positionX,dur*mult);
-    positionY = interpFRY.go(positionY,dur*mult);
-    yawAngle  = interpFRS.go(yawAngle, dur*mult);
+    positionZ = interpFRZ.go(positionZ,dur*multZ, inter_style);
+    positionX = interpFRX.go(positionX,dur*mult , inter_style);
+    positionY = interpFRY.go(positionY,dur*mult , inter_style);
+    yawAngle  = interpFRS.go(yawAngle, dur*mult , inter_style);
   }
   
   else if (leg == 1) {    // front left
-    positionZ = interpFLZ.go(positionZ,dur*multZ);
-    positionX = interpFLX.go(positionX,dur*mult);
-    positionY = interpFLY.go(positionY,dur*mult);
-    yawAngle  = interpFLS.go(yawAngle, dur*mult);            
+    positionZ = interpFLZ.go(positionZ,dur*multZ, inter_style);
+    positionX = interpFLX.go(positionX,dur*mult , inter_style);
+    positionY = interpFLY.go(positionY,dur*mult , inter_style);
+    yawAngle  = interpFLS.go(yawAngle, dur*mult , inter_style);            
   }
 
   else if (leg == 2) {   // back right
-    positionZ = interpBRZ.go(positionZ,dur*multZ);
-    positionX = interpBRX.go(positionX,dur*mult);
-    positionY = interpBRY.go(positionY,dur*mult);
-    yawAngle  = interpBRS.go(yawAngle, dur*mult);
+    positionZ = interpBRZ.go(positionZ,dur*multZ, inter_style);
+    positionX = interpBRX.go(positionX,dur*mult , inter_style);
+    positionY = interpBRY.go(positionY,dur*mult , inter_style);
+    yawAngle  = interpBRS.go(yawAngle, dur*mult , inter_style);
   }
 
   else if (leg == 3) {    // back left
-    positionZ = interpBLZ.go(positionZ,dur*multZ);
-    positionX = interpBLX.go(positionX,dur*mult);
-    positionY = interpBLY.go(positionY,dur*mult);
-    yawAngle  = interpBLS.go(yawAngle, dur*mult);
+    positionZ = interpBLZ.go(positionZ,dur*multZ, inter_style);
+    positionX = interpBLX.go(positionX,dur*mult , inter_style);
+    positionY = interpBLY.go(positionY,dur*mult , inter_style);
+    yawAngle  = interpBLS.go(yawAngle, dur*mult , inter_style);
   }
 
   
