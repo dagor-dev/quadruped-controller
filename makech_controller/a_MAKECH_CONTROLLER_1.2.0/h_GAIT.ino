@@ -598,10 +598,10 @@ void walking(int stepPeriod, float constantX, float constantY, float constantYaw
 
   prev_feet_offset_y = r_state.foot_pos_offset_y;
 
-  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, stepPeriod);   // front right leg
-  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, stepPeriod);   // front left leg
-  gaitKinematics (2, bl_x, -bl_y, legLength2, bl_yaw, pitchAngle, 0, stepPeriod);   // back left leg
-  gaitKinematics (3, br_x, -br_y, legLength1, br_yaw, pitchAngle, 0, stepPeriod);   // back right leg
+  gaitKinematics (0, fr_x, -fr_y, legLength1, fr_yaw, pitchAngle, 0, stepPeriod, 0.5, 0);   // front right leg
+  gaitKinematics (1, fl_x, -fl_y, legLength2, fl_yaw, pitchAngle, 0, stepPeriod, 0.5, 0);   // front left leg
+  gaitKinematics (2, bl_x, -bl_y, legLength2, bl_yaw, pitchAngle, 0, stepPeriod, 0.5, 0);   // back left leg
+  gaitKinematics (3, br_x, -br_y, legLength1, br_yaw, pitchAngle, 0, stepPeriod, 0.5, 0);   // back right leg
 
   sendCalculatedAngles();
 }
