@@ -6,7 +6,7 @@
 void setup(){
   
   Serial.begin(115200);
-  Serial.println("[CONTROLLER] FW 1.2.0");
+  Serial.println("[CONTROLLER] FW 1.3.1");
   Serial.println("[CONTROLLER] INIT.");
   delay(600);  //added delay to give wireless ps2 module some time to startup, before configuring it
     

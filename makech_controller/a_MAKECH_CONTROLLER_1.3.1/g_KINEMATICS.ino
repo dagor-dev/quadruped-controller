@@ -428,7 +428,7 @@ void gaitKinematics(int leg, float positionX, float positionY, float positionZ, 
 
   static float mult = 1.0;
   float multZ = mult_z; //0.5;   // all motions in Z are halfed because the foot has to go up AND down in the same time as the move moves in XY
-  Serial.println(multZ);
+  //Serial.println(multZ);
 
   if (leg == FRL) {       // front right
     positionZ = interpFRZ.go(positionZ,dur*multZ, inter_style);

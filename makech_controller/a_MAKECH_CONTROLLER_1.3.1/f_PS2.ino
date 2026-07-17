@@ -22,7 +22,7 @@ void toggleStateMachine(){
       Serial.println("STATE MACHINE: Trotting.");
       stateMachine = TROT;
     } else if (ps2x.button(PSB_L1)) {
-      Serial.println("STATE MACHINE: Gemini Trot.");
+      Serial.println("STATE MACHINE: Improved Trot.");
       stateMachine = TROT_GEMINI;
     }
     else{
@@ -33,7 +33,7 @@ void toggleStateMachine(){
   else if(ps2x.button(PSB_L2) && !pressed){
     pressed = true;
     if(ps2x.button(PSB_R1)){
-      Serial.println("STATE MACHINE: Gemini Crawl.");
+      Serial.println("STATE MACHINE: Improved Crawl.");
       stateMachine = CRAWL_GEMINI;
     } else {
       Serial.println("STATE MACHINE: Kinematics Demo.");
@@ -105,9 +105,10 @@ void homing(){
 
       if (bll){
           sendData(legs[BLL].id, "home", 0, "home", 0, "home", 0);
-          sendData(legs[BLL].id, "MLV3", 0, "MLV3", 0, "MLV3", 0);
+          sendData(legs[BLL].id, "MLV3", 0, "MLV4", 0, "MLV3", 0);
           sendData(legs[BLL].id, "MLU10", 0, "MLU10", 0, "MLU10", 0);
           sendData(legs[BLL].id, "MQP1", 0, "MQP1", 0, "MQP1", 0);
+          sendData(legs[BLL].id, "MAP1", 0, "MAP2", 0, "MAP1", 0);
       }
   }
 }

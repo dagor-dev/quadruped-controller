@@ -1,4 +1,5 @@
 /* 
+ *
  *  ESP32 based controller for Makech Quadruped robot through directional ESP-NOW.
  *      - Whole body Kinematics and open-loop gait generation -
  *  
@@ -36,16 +37,18 @@ typedef struct Robot_state{
 
 Robot_state r_state;
 
-//##########################_GAIT PARAMETERS_##########################
+/*
+ * Gait parameters
+ */
 typedef struct Gait_parameters{
-  float step_length_x = 55;           // Length of the step in the X axis [mm]
+  float step_length_x = 50;           // Length of the step in the X axis [mm]
   float step_length_y = 30;           // Length of the step in the Y axis [mm]
-  float step_length_z = 70;           // Lenght the foot is picked up on the swing phase of the gait [mm]
+  float step_length_z = 65;           // Lenght the foot is picked up on the swing phase of the gait [mm]
   float yaw_angle = 12;               // Degrees to turn in yaw during gait [degrees]
-  float pitch_angle = 10;             // Max pitch angle during gait [degrees]
+  float pitch_angle = 12;             // Max pitch angle during gait [degrees]
   float trot_period = 150;
   float stance_period = 600;          // Time each phase of the gait takes [ms]
-  float swing_period =  150;
+  float swing_period =  200;
   float sync_ratio = 0.5;             // 0 -> completely in sync, 1 completely out of sync / used for crawling
   const float update_freq = 250;      // [Hz]
 } Gait_parameters;

@@ -4,7 +4,13 @@
  * (e.g., KINEMATICS_DEMO, CRAWL, TROT) at the specified update frequency.
  */
 void loop() {
-  unsigned long datos = ps2x.read();   // Never comment this line
+
+  static unsigned long lastPsxRead = 0;
+  if (millis() - lastPsxRead >= 20) {          // poll controller at 50 Hz
+    lastPsxRead = millis();
+    ps2x.read();                                // Never comment this line
+  }
+
   timeManagement();                    // Never comment this line either
   serialEvent();
 
@@ -36,21 +42,21 @@ void loop() {
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
       //crawl(0.5, 100, 100, 45, 25, 6, 10);
-      trot(gait.trot_period, 55, 25, 8, 10);
+      trot(gait.trot_period, 50, 25, 8, 10);
     }
   }
   else if(stateMachine == CRAWL_GEMINI){
     walkingPeriod += timeDif;
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
-      crawling_gemini();
+      improved_crawl();
     }
   }
   else if(stateMachine == TROT_GEMINI){
     walkingPeriod += timeDif;
     if(walkingPeriod >= (1000/gait.update_freq) ){
       walkingPeriod = 0;
-      trot_gemini();
+      improved_trot(gait.trot_period+15, 50, 25, 8, 12);
     }
   }
 
@@ -62,6 +68,9 @@ void loop() {
     jump();
   }
   */
+
+  static unsigned long lastReport = 0;
+  if (millis() - lastReport > 1000) { lastReport = millis(); Serial.println(timeDif); }
 }
 
 /*
